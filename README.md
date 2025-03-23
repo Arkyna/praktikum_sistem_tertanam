@@ -1,6 +1,6 @@
-Tempat pengumpulan (code dumping):
+#Tempat pengumpulan (code dumping):
 
-*SysTrek*
+##*SysTrek*
 (Kelompok 9 RB Sistem tertanam)
 
 Berikut adalah para pahlawan di kelompok ini:
