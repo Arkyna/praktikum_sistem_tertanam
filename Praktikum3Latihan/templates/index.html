@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monitoring Sensor HC-SR 04</title>
+  </head>
+  <body>
+    <h1>Monitoring Ketinggian air</h1>
+    <h2 id="distance">Memuat data..</h2>
+    <h3 id="status"></h3>
+
+    <script>
+      async function fetchData() {
+        const response = await fetch("/data");
+        const data = await response.json();
+        const distance = data.distance;
+        const message =
+          distance < 5
+            ? " Air dalam wadah penuh"
+            : " Air     masih dapat ditampung";
+
+        document.getElementById("distance").innerText = `Jarak: ${distance} cm`;
+        document.getElementById("status").innerText = message;
+      }
+      setInterval(fetchData, 5000);
+      window.onload = fetchData;
+    </script>
+  </body>
+</html>

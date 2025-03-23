@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pendeteksi Hujan & Cahaya</title>
+    <style>
+      body {
+        text-align: center;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: inline-block;
+      }
+      h1 {
+        color: #333;
+      }
+      .status-box {
+        font-size: 20px;
+        margin: 10px 10px;
+        padding: 15px;
+        border-radius: 5px;
+        display: inline-block;
+        width: 220px;
+        font-weight: bold;
+        color: white;
+      }
+      .light-bright {
+        background-color: #28a745;
+      } /* Hijau = Terang */
+      .light-dark {
+        background-color: #dc3545;
+      } /* Merah = Gelap */
+      .rain-yes {
+        background-color: #007bff;
+      } /* Biru = Hujan */
+      .rain-no {
+        background-color: #ffc107;
+      } /* Kuning = Tidak Hujan */
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Sistem Pendeteksi Hujan & Cahaya</h1>
+
+      <div id="light-status" class="status-box">Keadaan Cahaya: -</div>
+      <div id="rain-status" class="status-box">Status Hujan: -</div>
+
+      <h3>Nilai LDR: <span id="ldr-value">-</span></h3>
+      <h3>Waktu Pembaruan: <span id="timestamp">-</span></h3>
+    </div>
+
+    <script>
+      async function fetchData() {
+        try {
+          const response = await fetch("/weather");
+          const data = await response.json();
+
+          // Update kondisi cahaya
+          const lightBox = document.getElementById("light-status");
+          if (data.condition === "Gelap") {
+            lightBox.innerText = "Keadaan Cahaya: Gelap";
+            lightBox.className = "status-box light-dark";
+          } else {
+            lightBox.innerText = "Keadaan Cahaya: Terang";
+            lightBox.className = "status-box light-bright";
+          }
+
+          // Update status hujan
+          const rainBox = document.getElementById("rain-status");
+          if (data.rain) {
+            rainBox.innerText = "Status Hujan: Ya";
+            rainBox.className = "status-box rain-yes";
+          } else {
+            rainBox.innerText = "Status Hujan: Tidak";
+            rainBox.className = "status-box rain-no";
+          }
+
+          // Update nilai sensor dan waktu pembaruan
+          document.getElementById("ldr-value").innerText = data.ldr_value;
+          document.getElementById("timestamp").innerText = data.time;
+        } catch (error) {
+          console.error("Error fetching weather data:", error);
+        }
+      }
+
+      // Update data setiap 1.5 detik dan saat halaman selesai dimuat
+      setInterval(fetchData, 1500);
+      window.onload = fetchData;
+    </script>
+  </body>
+</html>
