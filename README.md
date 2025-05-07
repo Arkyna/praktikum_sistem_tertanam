@@ -1,4 +1,4 @@
-# Tempat pengumpulan (code dumping):
+# Tempat pengumpulan kodingan (code dumping):
 
 ## *SysTrek*
 (Kelompok 9 RB Sistem tertanam)
