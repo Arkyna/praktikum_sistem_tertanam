@@ -7,10 +7,10 @@
 
 Preferences prefs;
 
-const char* ssid = "XXX";
-const char* password = "XXXX";
-#define BOT_TOKEN "XXX"
-#define CHAT_ID "XXX"
+const char* ssid = "xxx";
+const char* password = "xxx";
+#define BOT_TOKEN "xxx"
+#define CHAT_ID "xxx"
 
 #define LDR_PIN 34
 #define RAIN_PIN 35
@@ -158,14 +158,19 @@ void handleSensorLogic() {
 
   if (!modeOtomatis) return;
 
-  if (!isnan(temp) && temp < TEMP_THRESHOLD) nyalakanFan();
-  else if (!isnan(hum) && hum > HUM_THRESHOLD) nyalakanFan();
+  if (isnan(hum)) {
+    stopFan(); // fallback safety
+    return;
+  }
+
+  if (hum > HUM_THRESHOLD) nyalakanFan();
   else stopFan();
 
   if (ldr >= LDR_THRESHOLD && jemuranKeluar) tutupJemuran("Gelap");
   if (rain == LOW && jemuranKeluar) tutupJemuran("Hujan");
   if (ldr < LDR_THRESHOLD && rain != LOW && !jemuranKeluar) bukaJemuran("Cerah");
 }
+
 
 void sendStatus(String chat_id) {
   int ldr = analogRead(LDR_PIN);
@@ -236,10 +241,12 @@ void handleTelegramMessages(int numNewMessages) {
     if (text == "/start") {
       bot.sendMessage(chat_id,
         "Perintah:\n"
-        "/buka, /tutup, /status\n/manual, /auto\n"
+        "/buka, /tutup, /status\n"
+        "/manual, /auto\n"
         "/test_motor [fw/rv] [speed] [ms]\n"
         "/test_fan\n"
         "/set_temp 29.5\n/set_hum 70\n/set_ldr 2400\n"
+        "/debug_on, /debug_off\n"
         "/reset"
       );
     } else if (text == "/buka") {
@@ -254,6 +261,12 @@ void handleTelegramMessages(int numNewMessages) {
       bot.sendMessage(chat_id, "Mode: Otomatis");
     } else if (text == "/status") {
       sendStatus(chat_id);
+	} else if (text == "/debug_on") {
+      debugMode = true;
+      bot.sendMessage(chat_id, "🟢 Debug mode AKTIF.");
+    } else if (text == "/debug_off") {
+      debugMode = false;
+      bot.sendMessage(chat_id, "🔴 Debug mode NONAKTIF.");
     } else if (text.startsWith("/set_")) {
       parseSetThreshold(text);
       bot.sendMessage(chat_id, "✅ Threshold diperbarui.");
@@ -286,4 +299,4 @@ void handleTelegramMessages(int numNewMessages) {
     }
   }
 }
-//v.1.2.5  
+//v.1.2.3 fix2

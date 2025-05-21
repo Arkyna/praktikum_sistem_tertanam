@@ -8,8 +8,8 @@
 #include <UniversalTelegramBot.h>
 #include <ArduinoJson.h>
 
-const char* ssid = "alwi ganteng";
-const char* password = "gatau gua";
+const char* ssid = "xxx";
+const char* password = "xxx";
 
 const char* BOTtoken = "xxx"; // Your Bot Token
 const String CHAT_ID = "xxx"; // Authorized chat ID

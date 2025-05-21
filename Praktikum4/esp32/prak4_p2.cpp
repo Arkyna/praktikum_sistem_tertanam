@@ -5,8 +5,8 @@
 #include <LiquidCrystal_I2C.h>
 
 // WiFi credentials
-const char* ssid = "alwi ganteng";
-const char* password = "gatau gua";
+const char* ssid = "xxx";
+const char* password = "xxx";
 
 // Telegram BOT Token
 const char* botToken = "XXXXXXXXXXX";
